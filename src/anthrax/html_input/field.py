@@ -5,6 +5,7 @@ from lxml.etree import ParserError
 
 from anthrax.field.text import TextField
 from anthrax.widget import LongTextInput
+from anthrax.exc import ValidationError
 
 from anthrax.html_input.widget import WysiwygEditor
 
