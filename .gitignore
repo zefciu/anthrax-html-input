@@ -1,0 +1,5 @@
+__pycache__
+*.swp
+src/AnthraxHTMLInput.egg-info
+build/
+dist/
