@@ -1,7 +1,7 @@
 from gettext import gettext as _
 
 from lxml import html
-from lxml.etree import ParserError
+from lxml.etree import ParserError, XMLSyntaxError
 
 from anthrax.field.text import TextField
 from anthrax.widget import LongTextInput
@@ -18,7 +18,7 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
     def to_python(self, value):
         try:
             return html.fromstring(value)
-        except ParserError as err:
+        except (ParserError , XMLSyntaxError) as err:
             raise ValidationError(
                 _('Cannot parse. Parser message: {0}').format(err.args[0])
             )
