@@ -23,6 +23,12 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
                 _('Cannot parse. Parser message: {0}').format(err.args[0])
             )
 
+    def from_python(self, value):
+        if value is not None:
+            return value.render()
+        else:
+            return ''
+
     def _prepare_lists(self):
         self.any_attrib_set = set()
         self.tag_attrib_dict = {}
