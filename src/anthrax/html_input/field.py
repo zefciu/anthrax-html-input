@@ -15,7 +15,7 @@ class HtmlField(TextField):
     """Field for HTML input. Does HTML validation. Parameters:
 tag_whitelist = a list of strings denoting tags or tuples (tag, args)
 """
-    def to_python(self, value):
+    def to_python(self, value, form):
         try:
             return html.fromstring(value)
         except (ParserError , XMLSyntaxError) as err:
@@ -23,7 +23,7 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
                 _('Cannot parse. Parser message: {0}').format(err.args[0])
             )
 
-    def from_python(self, value):
+    def from_python(self, value, form):
         if value is not None:
             return value.render()
         else:
@@ -57,6 +57,6 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
             self._validate_element(subel)
 
 
-    def _declarative_python_validation(self, element):
+    def _declarative_python_validation(self, element, form):
         self._prepare_lists()
         self._validate_element(element)
