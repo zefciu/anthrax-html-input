@@ -25,7 +25,7 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
 
     def from_python(self, value, form):
         if value is not None:
-            return value.render()
+            return html.tostring(value).decode('utf-8')
         else:
             return ''
 
