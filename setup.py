@@ -1,5 +1,5 @@
 # vim set fileencoding=utf-8
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.rst') as f:
     long_description = f.read()
@@ -9,7 +9,7 @@ with open('entry_points.ini') as f:
 
 setup(
     name = 'AnthraxHTMLInput',
-    version = '0.0.3',
+    version = '0.0.4',
     author = 'Szymon Pyżalski',
     author_email = 'zefciu <szymon@pythonista.net>',
     description = 'Anthrax - tools for HTML input',
@@ -21,9 +21,7 @@ setup(
     test_suite = 'nose.collector',
     package_dir = {'': 'src'},
     namespace_packages = ['anthrax'],
-    packages = [
-        'anthrax', 'anthrax.'
-    ],
+    packages = find_packages('src'),
     classifiers = [
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
