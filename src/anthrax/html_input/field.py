@@ -9,6 +9,8 @@ from anthrax.exc import ValidationError
 
 from anthrax.html_input.widget import WysiwygEditor
 
+SAFE_TAGS = {'div', 'p', 'b', 'i', 'br'}
+
 
 class HtmlField(TextField):
     widgets = [WysiwygEditor, LongTextInput]
