@@ -9,7 +9,10 @@ from anthrax.exc import ValidationError
 
 from anthrax.html_input.widget import WysiwygEditor
 
-SAFE_TAGS = {'div', 'p', 'b', 'i', 'br'}
+SAFE_TAGS = {
+    'div', 'span', 'p', 'b', 'i', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'h7',
+}
 
 
 class HtmlField(TextField):
