@@ -24,6 +24,8 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
         try:
             return html.fromstring(value)
         except (ParserError , XMLSyntaxError) as err:
+            if err.args[0] == 'Document is empty':
+                return html.fromstring('<div></div>')
             raise ValidationError(
                 _('Cannot parse. Parser message: {0}').format(err.args[0])
             )
