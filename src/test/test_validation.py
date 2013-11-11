@@ -4,8 +4,8 @@ from anthrax.container import Form
 from anthrax.html_input.field import HtmlField
 from util import dummy_frontend
 
-class Test(unittest.TestCase):
-    """Test basic form features"""
+class TestUntrusted(unittest.TestCase):
+    """Test the form with untrusted HTML input."""
 
     def setUp(self):
         class TestForm(Form):
@@ -15,6 +15,7 @@ class Test(unittest.TestCase):
                     'p',
                     ('span', ['class', 'id']),
                     ('b', []),
+                    ('div', []),
                 ]
             )
         self.form = TestForm()
@@ -67,3 +68,37 @@ class Test(unittest.TestCase):
             self.form.__errors__['text'].message,
             'Attribute id not allowed in tag b',
         )
+
+    def test_empty(self):
+        """Empty form gives empty div"""
+        self.form.__raw__ = {'text': ''}
+        self.assertTrue(self.form.__valid__)
+        self.assertEqual(self.form['text'].tag, 'div')
+        self.assertEqual(self.form['text'].text, None)
+
+    def test_invalid(self):
+        """Cannot validate invalid HTML"""
+        self.form.__raw__ = {'text': '<<<'}
+        self.assertFalse(self.form.__valid__)
+
+
+class TestTrust(unittest.TestCase):
+    """Test the form with trusted HTML input."""
+    
+    def setUp(self):
+        class TestForm(Form):
+            __frontend__ = dummy_frontend
+            text = HtmlField(
+                trust = True
+            )
+        self.form = TestForm()
+
+    def test_valid(self):
+        """Testing an input"""
+        self.form.__raw__ = {
+            'text': """<p class="knight">
+<span class="name">Sir <b>Galahad</b></span> <i>The Pure</i>
+</p>"""
+        }
+        self.assertTrue(self.form.__valid__)
+        self.assertEqual(self.form['text'].tag, 'p')

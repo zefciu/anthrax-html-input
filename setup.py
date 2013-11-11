@@ -9,7 +9,7 @@ with open('entry_points.ini') as f:
 
 setup(
     name = 'AnthraxHTMLInput',
-    version = '0.0.7',
+    version = '0.0.8',
     author = 'Szymon Pyżalski',
     author_email = 'zefciu <szymon@pythonista.net>',
     description = 'Anthrax - tools for HTML input',

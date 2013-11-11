@@ -11,21 +11,26 @@ from anthrax.html_input.widget import WysiwygEditor
 
 SAFE_TAGS = {
     'div', 'span', 'p', 'b', 'i', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'h7',
+    'h7', 'a', 'ul', 'ol', 'li', 'dl', 'dt', 'dd'
 }
 
 
 class HtmlField(TextField):
     widgets = [WysiwygEditor, LongTextInput]
     """Field for HTML input. Does HTML validation. Parameters:
-tag_whitelist = a list of strings denoting tags or tuples (tag, args)
+:param trust: If True - don't validate for safe HTML
+:param tag_whitelist: list of strings denoting tags or tuples (tag, args)
 """
+
+    trust = False
+    tag_whitelist = []
+
     def to_python(self, value, form):
+        if value == '':
+            return html.fromstring('<div></div>')
         try:
             return html.fromstring(value)
         except (ParserError , XMLSyntaxError) as err:
-            if err.args[0] == 'Document is empty':
-                return html.fromstring('<div></div>')
             raise ValidationError(
                 _('Cannot parse. Parser message: {0}').format(err.args[0])
             )
@@ -47,6 +52,8 @@ tag_whitelist = a list of strings denoting tags or tuples (tag, args)
                 self.any_attrib_set.add(tag)
 
     def _validate_element(self, el):
+        if self.trust:
+            return
         tag = el.tag
         if tag in self.tag_attrib_dict:
             illegal_attrs = set(el.attrib) - self.tag_attrib_dict[tag]
